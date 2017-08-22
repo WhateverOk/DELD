@@ -17,7 +17,19 @@ function Button( paraX , paraY , paraWidth, paraHeight ) {
     
     this.high = "#FF0000" ;    // pure red color
     this.low = "#FF9980" ;  // faint red
+    
+    this.on = false ;
 }
+
+Button.prototype.Draw = function(ctx) { 
+    if(this.on)
+        ctx.fillStyle = this.high ;
+    else    
+        ctx.fillStyle = this.low ;
+    
+    ctx.fillRect( this.rect.x ,this.rect.y ,this.rect.w ,this.rect.h );
+}
+
 
 //----------------------------------------- Variables , Objects
 
@@ -42,15 +54,18 @@ function Start() {
         
         buttonStartX += 45 ;
     }
-    
 
     
-      Button.prototype.Draw=function(ctx){
-         ctx.rect(this.rect.x,this.rect.y,this.rect.w,this.rect.h);
-
-      }
 }
+
+
 function Draw() { // A normal function which inclues complete draw method
+    
+    for(var i = 0 ; i< 5 ; i++) {
+        ButtonObjects[i].Draw(ctx) ;
+    }
+    
+    
     ctx.beginPath();
     var x , y , radius ;
     x = 40 ;
@@ -91,12 +106,24 @@ function Draw() { // A normal function which inclues complete draw method
 function OnMouseClick(mouseData) { // when we click on canvas this functuion is called 
     var mouseLocation = new Vector(mouseData.clientX , mouseData.clientY) ;
 
-    if( isInside(pos, rect) ){
-       console.log("clicked inside"); 
+    for(var i = 0 ; i < ButtonObjects.length ; i++) {
+        if( isInside(mouseLocation , ButtonObjects[i].rect ) ){ // mouse location and button rect from each element of ButtonObjects array
+            console.log("clicked on Button Object "+(1+i)); 
+            if(ButtonObjects[i].on) {
+                ButtonObjects[i].on = false ;
+                console.log("false") ;
+            }
+            else {
+                ButtonObjects[i].on = true ;
+                console.log("true") ;
+            }
+        }
+//        else {
+//            ButtonObjects[i].on = false ;
     }
-    else{
-        console.log("clicked outside");                
-    } 
+  
+    ctx.clearRect(0, 0 , 800 , 600) ;
+    Draw() ;
 }
 
 
