@@ -1,12 +1,55 @@
-"use strict";
-var c = document.getElementById("toolkit");
+//----------------------------------------- Class
+
+function Vector (paraX , paraY){
+    this.x= paraX ;
+    this.y= paraY ;
+}
+
+function Rectangle( paraX , paraY , paraWidth, paraHeight ){
+    this.x= paraX ;
+    this.y= paraY ;
+    this.w= paraWidth ;
+    this.h= paraHeight ;
+}
+
+function Button( paraX , paraY , paraWidth, paraHeight ) {
+    this.rect = new Rectangle(paraX , paraY , paraWidth, paraHeight) ;
+    
+    this.high = "#FF0000" ;    // pure red color
+    this.low = "#FF9980" ;  // faint red
+}
+
+//----------------------------------------- Variables , Objects
+
+var c = document.getElementById("toolkit"); // toolkit is id of canvas element from html
 var ctx = c.getContext("2d");
 
+var ButtonObjects = [] ;
+
+//----------------------------------------- Main Functions
 
 window.onload = function() { // This functions whenever the page is loaded
+    Start() ;
     Draw() ;
 }
 
+function Start() { 
+    var buttonStartX = 40 ;
+    
+    for(var i = 0 ; i < 5 ; i++) {  // Initiating our buttons
+        var tempButton = new Button(buttonStartX , 100 , 30 , 30) ;
+        ButtonObjects.push(tempButton) ;
+        
+        buttonStartX += 45 ;
+    }
+    
+
+    
+      Button.prototype.Draw=function(ctx){
+         ctx.rect(this.rect.x,this.rect.y,this.rect.w,this.rect.h);
+
+      }
+}
 function Draw() { // A normal function which inclues complete draw method
     ctx.beginPath();
     var x , y , radius ;
@@ -26,11 +69,11 @@ function Draw() { // A normal function which inclues complete draw method
     ctx.stroke();
     x=40,y=100;
     
-    for(var i=0;i<5;i++){  //for rectangles
+    for(var i=0 ; i<5 ; i++){  //for rectangles
         ctx.rect(x,y,30,30);
         ctx.stroke();
         x+=45;
-} 
+    }    
     
     ctx.moveTo(0,160);
     ctx.lineTo(407,160);
@@ -40,32 +83,15 @@ function Draw() { // A normal function which inclues complete draw method
     ctx.stroke();
     
 }
-    function Vector(x,y){
-        this.x=x;
-        this.y=y;
-    }
     
-
+    
+//----------------------------------------- Basic Functions
  
-     
-     
 
-    // var topLeft = new Vector(40,100);
-     //var bottomRight = new Vector(x+w,y-h);
-     //var topRight = new Vector(x+w,y-h);
-     //var bottomRight =new Vector(x+w,y-h);
-//     var inside = isInside() ;
+function OnMouseClick(mouseData) { // when we click on canvas this functuion is called 
+    var mouseLocation = new Vector(mouseData.clientX , mouseData.clientY) ;
 
-
-function mousePos(event){//when we click on ccanvas this functuion is called
-   
-    var x = event.clientX ;
-    var y = event.clientY ;
-    console.log(x+" , "+y) ;
-    
-    var pos = new Vector(x,y) ;
-    
-     if(isInside(pos, rect)){
+    if( isInside(pos, rect) ){
        console.log("clicked inside"); 
     }
     else{
@@ -73,80 +99,19 @@ function mousePos(event){//when we click on ccanvas this functuion is called
     } 
 }
 
-<<<<<<< HEAD
-function Vector(someX , someY) {
-    this.x = someX ;
-    this.y = someY ;
+
+function isInside( pos, rect) { //to check mouse pos and rectangle pos
+    if ((pos.x > rect.x) && (pos.x < (rect.x+rect.w)) ) {
+        if(( pos.y < (rect.y+rect.h) && (pos.y > rect.y))) {
+            return true;
+        }
+        else    
+            return false ;
+    }
+    else
+        return false ;
 }
 
-var time = new Vector(10 ,120) ;
-
-console.log(time) ;
-
-function OnMouseClick(mouseData) {
-    var x = mouseData.clientX ;
-    var y = mouseData.clientY ;
-    
-    var MousePosition = new Vector(x,y) ;
-//    console.log("x : "+x+" y :"+y) ;
-}
+//----------------------------------------- Event Listeners
 
 c.addEventListener("click" , OnMouseClick) ;
-
-console.log("Script was succesfully executed") ;
-=======
-    function isInside( pos, rect){//to check mouse pos and rectangle pos
-        if  ( (pos.x > rect.x) && (pos.x < (rect.x+rect.w)) )
-              if(( pos.y < (rect.y+rect.h) && (pos.y > rect.y)))
-                return true;
-              
-        }
-
-    function Rectangle(x,y,w,h){
-    this.x=x;
-    this.y=y;
-    this.w=w;
-    this.h=h;
-    
-}
- var arr=[]; 
-var x1=40;
- for(i=0;i<5;i++){
-     
-     var rect = new Rectangle(x1,100,30,30);
-     arr.push(rect);
-     x1+=45;
-      
- }
-     c.addEventListener("click" , mousePos) ;
-
-
-  function Button(){
-      this.rect= new Rectangle(30,40,30,30);
-      this.color= "#FF0000";
-      
-  }      
-  Button.prototype.Draw=function(ctx){
-     ctx.rect(this.rect.x,this.rect.y,this.rect.w,this.rect.h);
-        
-  }
-     
-    
-
-var myButton=[];
-for(var i=0;i<5;i++){
-    var butn = new Button(30,40,30,30);
-    myButton.push(butn);
-    
-}
-
-    for (var i=0;i<myButton.length;i++){
-        myButton[i].Draw(ctx);
-    }
-        
-       
-
-
-
-
->>>>>>> c071f29d12cb3800e5102668b8947a32ab446aa8
